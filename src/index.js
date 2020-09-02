@@ -2,9 +2,9 @@ import React, {Component} from "react";
 import ReactDOM from 'react-dom'
 import AppHeader from "./AppHeader";
 import AppFooter from "./AppFooter";
-import AppContent from "./AppContent"
 import "./css/index.css"
 import 'bootstrap/dist/css/bootstrap.css'
+import FormComponent from "./FormComponent";
 
 class App extends Component {
 
@@ -16,7 +16,7 @@ class App extends Component {
         }
         return <div className="app">
             <AppHeader title="React Application" subtitle="Learning Props"/>
-            <AppContent/>
+            <FormComponent/>
             <AppFooter{...footerProps}/>
         </div>
     }
