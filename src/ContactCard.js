@@ -4,7 +4,6 @@ import "./css/contactCard.css"
 export default class ContactCard extends Component {
     render() {
         return <div className="card card-dimen">
-
             <div className={"row"}>
                 <div className="col-md-4">
                     <img src={this.props.contact.picture} className="card-img image-dimen" alt="user_image"/>

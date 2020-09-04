@@ -4,20 +4,18 @@ import AppHeader from "./AppHeader";
 import AppFooter from "./AppFooter";
 import "./css/index.css"
 import 'bootstrap/dist/css/bootstrap.css'
-import ContactCard from "./ContactCard";
+import ContactList from "./ContactList";
 
 class App extends Component {
-
 
     state = {
         contacts: []
     }
 
-    componentDidMount() {
-        fetch("/data.json")
-            .then(resp => resp.json())
-            .then(data => this.setState({contacts: data.contacts}))
-            .catch(err => console.log(err))
+    async componentDidMount() {
+        let resp = await fetch("/data.json");
+        let contacts = await resp.json();
+        this.setState({contacts: contacts.contacts})
     }
 
     render() {
@@ -26,11 +24,10 @@ class App extends Component {
             year: new Date().getFullYear(),
             company: "Prayas Group PVT. LTD."
         }
-        const contactsCard = this.state.contacts.map(contact => <ContactCard key={contact.id} contact={contact}/>)
 
         return <div className="app">
             <AppHeader title="React Application" subtitle="Learning Props"/>
-            {contactsCard}
+            <ContactList contacts={this.state.contacts}/>
             <AppFooter{...footerProps}/>
         </div>
     }
