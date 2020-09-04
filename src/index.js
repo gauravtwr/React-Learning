@@ -8,50 +8,25 @@ import ContactCard from "./ContactCard";
 
 class App extends Component {
 
+
+    state = {
+        contacts: []
+    }
+
+    componentDidMount() {
+        fetch("/data.json")
+            .then(resp => resp.json())
+            .then(data => this.setState({contacts: data.contacts}))
+            .catch(err => console.log(err))
+    }
+
     render() {
         let footerProps = {
             website: "https://google.com",
             year: new Date().getFullYear(),
             company: "Prayas Group PVT. LTD."
         }
-        
-        const contacts = [
-            {
-                "id": 1,
-                "name": "Prayas Jain",
-                "gender": "Male",
-                "email": "p.jain3322@gmail.com",
-                "phone": "9718495185",
-                "picture": "https://avatars3.githubusercontent.com/u/21375373?s=460&u=16334b1fcf1ca2f32e95efbe8fbfd6fe0febdc55&v=4"
-            },
-            {
-                "id": 2,
-                "name": "Prayas Jain",
-                "gender": "Male",
-                "email": "p.jain3322@gmail.com",
-                "phone": "9718495185",
-                "picture": "https://avatars3.githubusercontent.com/u/21375373?s=460&u=16334b1fcf1ca2f32e95efbe8fbfd6fe0febdc55&v=4"
-            },
-
-            {
-                "id": 3,
-                "name": "Prayas Jain",
-                "gender": "Male",
-                "email": "p.jain3322@gmail.com",
-                "phone": "9718495185",
-                "picture": "https://avatars3.githubusercontent.com/u/21375373?s=460&u=16334b1fcf1ca2f32e95efbe8fbfd6fe0febdc55&v=4"
-            },
-
-            {
-                "id": 4,
-                "name": "Prayas Jain",
-                "gender": "Male",
-                "email": "p.jain3322@gmail.com",
-                "phone": "9718495185",
-                "picture": "https://avatars3.githubusercontent.com/u/21375373?s=460&u=16334b1fcf1ca2f32e95efbe8fbfd6fe0febdc55&v=4"
-            },
-        ]
-        const contactsCard = contacts.map((contact) => <ContactCard key={contact.id} contact={contact}/>)
+        const contactsCard = this.state.contacts.map(contact => <ContactCard key={contact.id} contact={contact}/>)
 
         return <div className="app">
             <AppHeader title="React Application" subtitle="Learning Props"/>

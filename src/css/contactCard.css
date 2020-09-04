@@ -1,11 +1,10 @@
 .image-dimen {
-    /*margin: 10px 10px 10px 10px;*/
+    margin: 10px 10px 10px 10px;
     height: 100px;
     width: 100px;
 }
 
 .card-dimen {
     width: 400px;
-    padding: 10px;
-    margin: 10px;
+    margin: 10px 10px 0px 10px;
 }

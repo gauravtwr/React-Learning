@@ -7,7 +7,7 @@ export default class ContactCard extends Component {
 
             <div className={"row"}>
                 <div className="col-md-4">
-                    <img src={this.props.contact.picture} className="card-img image-dimen" alt="image"/>
+                    <img src={this.props.contact.picture} className="card-img image-dimen" alt="user_image"/>
                 </div>
                 <div className="col-md-8">
                     <div className={"card-body"}>
