@@ -22,31 +22,32 @@ export default class FormComponent extends Component {
         switch (name) {
             case "name" :
                 if (value.length === 0 || !value) {
-                    this.state.formErrors.name = "Name is Required"
+                    formErrors.name = "Name is Required"
                 } else if (value.length < 3 || value.length > 20) {
-                    this.state.formErrors.name = "Name should be between 3 to 20 Characters"
+                    formErrors.name = "Name should be between 3 to 20 Characters"
                 } else {
-                    this.state.formErrors.name = ""
+                    formErrors.name = ""
                 }
                 break
             case "email" :
                 if (value.length === 0 || !value) {
-                    this.state.formErrors.email = "Email is Required"
+                    formErrors.email = "Email is Required"
                 } else if (!value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
-                    this.state.formErrors.email = "Enter Valid Email."
+                    formErrors.email = "Enter Valid Email."
                 } else {
-                    this.state.formErrors.email = ""
+                    formErrors.email = ""
                 }
                 break
             case "phone" :
                 if (value.length === 0 || !value) {
-                    this.state.formErrors.phone = "Phone is Required"
+                    formErrors.phone = "Phone is Required"
                 } else if (!value.match(/^\d{10,12}$/)) {
-                    this.state.formErrors.phone = "Enter valid Phone Number"
+                    formErrors.phone = "Enter valid Phone Number"
                 } else {
-                    this.state.formErrors.phone = ""
+                    formErrors.phone = ""
                 }
                 break
+            default:
         }
 
         this.setState({[name]: value, formErrors})
@@ -63,7 +64,22 @@ export default class FormComponent extends Component {
         event.preventDefault()
         let {formErrors} = this.state
         if (this.isValid(formErrors)) {
-            alert("Everything is OK")
+            let {name, phone, email, picture} = this.state
+            let contact = {id: Math.random(), name, phone, email, picture}
+            this.props.addContact(contact)
+            this.setState({
+                    name: "",
+                    phone: "",
+                    email: "",
+                    picture: "",
+                    formErrors: {
+                        name: "Name is Required",
+                        phone: "Phone is Required",
+                        email: "Email is Required",
+                    },
+                    errorMessages: ""
+                }
+            )
         } else {
             let errorMessages = Object.values(formErrors)
                 .map((err, index) => <li key={index}>{err}</li>);
@@ -73,53 +89,50 @@ export default class FormComponent extends Component {
     }
 
     render() {
+        console.log("render is called")
         return <div>
-            <div className={"row"}>
-                <div className={"col"}>
-                    <form className="form form-component" onSubmit={this.onSubmitHandler}>
-                        <div className="form-group row ">
-                            <label htmlFor="" className="control-label col-md-4">
-                                Name
-                            </label>
-                            <div className="col-md-8 ">
-                                <input onChange={this.handler} type="text" className="form-control" name={"name"}/>
-                            </div>
-                        </div>
-                        <div className="form-group row">
-                            <label htmlFor="" className="control-label col-md-4">
-                                Phone Number
-                            </label>
-                            <div className="col-md-8">
-                                <input onChange={this.handler} type="Number" className="form-control" name={"phone"}/>
-                            </div>
-                        </div>
-                        <div className="form-group row">
-                            <label htmlFor="" className="control-label col-md-4 ">
-                                Email
-                            </label>
-                            <div className="col-md-8">
-                                <input onChange={this.handler} type="text" className="form-control" name={"email"}/>
-                            </div>
-                        </div>
-                        <div className="form-group row">
-                            <label htmlFor="" className="control-label col-md-4">
-                                Picture
-                            </label>
-                            <div className="col-md-8">
-                                <input onChange={this.handler} type="text" className="form-control" name={"picture"}/>
-                            </div>
-                        </div>
-                        <button className="btn btn-success">Save Data</button>
-                    </form>
-                    <ul>
-                        {this.state.errorMessages}
-                    </ul>
+            <form className="form form-component" onSubmit={this.onSubmitHandler}>
+                <div className="form-group row ">
+                    <label htmlFor="" className="control-label col-md-4">
+                        Name
+                    </label>
+                    <div className="col-md-8 ">
+                        <input value={this.state.name} onChange={this.handler} type="text" className="form-control"
+                               name={"name"}/>
+                    </div>
                 </div>
-                <div className={"col"}>
-                    <h3>Current State</h3>
-                    <pre>{JSON.stringify(this.state, null, 3)}</pre>
+                <div className="form-group row">
+                    <label htmlFor="" className="control-label col-md-4">
+                        Phone Number
+                    </label>
+                    <div className="col-md-8">
+                        <input value={this.state.phone} onChange={this.handler} type="Number" className="form-control"
+                               name={"phone"}/>
+                    </div>
                 </div>
-            </div>
+                <div className="form-group row">
+                    <label htmlFor="" className="control-label col-md-4 ">
+                        Email
+                    </label>
+                    <div className="col-md-8">
+                        <input value={this.state.email} onChange={this.handler} type="text" className="form-control"
+                               name={"email"}/>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label htmlFor="" className="control-label col-md-4">
+                        Picture
+                    </label>
+                    <div className="col-md-8">
+                        <input value={this.state.picture} onChange={this.handler} type="text" className="form-control"
+                               name={"picture"}/>
+                    </div>
+                </div>
+                <button onClick={this.onSubmitHandler} className="btn btn-success">Save Data</button>
+            </form>
+            <ul>
+                {this.state.errorMessages}
+            </ul>
         </div>
 
     }
