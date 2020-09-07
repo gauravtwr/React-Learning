@@ -6,6 +6,8 @@ import "./css/index.css"
 import 'bootstrap/dist/css/bootstrap.css'
 import ContactList from "./ContactList";
 import FormComponent from "./FormComponent";
+import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+import HomeComponent from "./HomeComponent";
 
 class App extends Component {
 
@@ -42,16 +44,32 @@ class App extends Component {
         }
 
         return <div className="app">
-            <AppHeader title="React Application" subtitle="Learning Props"/>
+            <Router>
+                <AppHeader title="React Application" subtitle="Learning Props"/>
 
-            <div className={"row"}>
-                <div className={"col"}>
-                    <FormComponent addContact={this.addContact}/>
+                <div className={"row"}>
+                    <div className={"col-md-4"}>
+                        <ul className={"list-group"}>
+                            <li className={"list-group-item"}>
+                                <Link to={"/"}>Home</Link>
+                            </li>
+                            <li className={"list-group-item"}>
+                                <Link to={"/add-new-contact"}>Add Contact</Link>
+                            </li>
+                            <li className={"list-group-item"}>
+                                <Link to={"/all-contacts"}>Show All Contacts</Link>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className={"col-md-8"}>
+                        <Route exact={true} path={"/"} component={HomeComponent}/>
+                        <Route path={"/add-new-contact"}
+                               component={() => <FormComponent addContact={this.addContact}/>}/>
+                        <Route path={"/all-contacts"} component={() => <ContactList contacts={this.state.contacts}
+                                                                                    deleteContact={this.deleteContact}/>}/>
+                    </div>
                 </div>
-                <div className={"col"}>
-                    <ContactList contacts={this.state.contacts} deleteContact={this.deleteContact}/>
-                </div>
-            </div>
+            </Router>
             <AppFooter{...footerProps}/>
         </div>
     }
