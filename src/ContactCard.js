@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import "./css/contactCard.css"
+import {Link} from "react-router-dom";
 
 export default class ContactCard extends Component {
     render() {
@@ -10,7 +11,11 @@ export default class ContactCard extends Component {
                 </div>
                 <div className="col-md-7">
                     <div className={"card-body"}>
-                        <h3 className={"card-title"}>{this.props.contact.name}</h3>
+                        <h3 className={"card-title"}>
+                            <Link to={`/contact-details/${this.props.contact.id}`}>
+                                {this.props.contact.name}
+                            </Link>
+                        </h3>
                         <div className={"card-text"}>{this.props.contact.email}</div>
                         <div className={"card-text"}>{this.props.contact.phone}</div>
                         <div className={"card-text"}>{this.props.contact.gender}</div>

@@ -8,6 +8,7 @@ import ContactList from "./ContactList";
 import FormComponent from "./FormComponent";
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import HomeComponent from "./HomeComponent";
+import ContactDetails from "./ContactDetails";
 
 class App extends Component {
 
@@ -36,6 +37,13 @@ class App extends Component {
         this.setState({contacts})
     }
 
+    getByID = (id) => {
+        let {contacts} = this.state
+        let index = contacts.findIndex(contact => contact.id === id)
+        console.log(index)
+        return contacts[index]
+    }
+
     render() {
         let footerProps = {
             website: "https://google.com",
@@ -46,9 +54,8 @@ class App extends Component {
         return <div className="app">
             <Router>
                 <AppHeader title="React Application" subtitle="Learning Props"/>
-
-                <div className={"row"}>
-                    <div className={"col-md-4"}>
+                <div className="row ">
+                    <div className={"col-md-3"}>
                         <ul className={"list-group"}>
                             <li className={"list-group-item"}>
                                 <Link to={"/"}>Home</Link>
@@ -61,12 +68,14 @@ class App extends Component {
                             </li>
                         </ul>
                     </div>
-                    <div className={"col-md-8"}>
+                    <div className={"col-md-9"}>
                         <Route exact={true} path={"/"} component={HomeComponent}/>
                         <Route path={"/add-new-contact"}
                                component={() => <FormComponent addContact={this.addContact}/>}/>
                         <Route path={"/all-contacts"} component={() => <ContactList contacts={this.state.contacts}
                                                                                     deleteContact={this.deleteContact}/>}/>
+                        <Route path={`/contact-details/:id`} exact={true}
+                               component={(props) => <ContactDetails {...props} getByID={this.getByID}/>}/>
                     </div>
                 </div>
             </Router>
