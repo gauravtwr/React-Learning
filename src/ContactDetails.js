@@ -11,7 +11,7 @@ export default class ContactDetails extends Component {
             <h3> Details of the selected Contact</h3>
             <div className="row">
                 <div className={"col-md-4"}>
-                    <img src={selectedUserDetail.picture} alt={selectedUserDetail.name}/>
+                    <img className="img img-thumbnail" src={selectedUserDetail.picture} alt={selectedUserDetail.name}/>
                 </div>
                 <div className={"col-md-7"}>
                     <table className="table table-bordered">
