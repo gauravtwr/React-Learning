@@ -1,14 +1,20 @@
 import React, {Component} from "react";
 import ReactDOM from 'react-dom'
-import AppHeader from "./AppHeader";
 import AppFooter from "./AppFooter";
 import "./css/index.css"
 import 'bootstrap/dist/css/bootstrap.css'
-import ContactList from "./ContactList";
-import FormComponent from "./FormComponent";
-import {BrowserRouter as Router, Route, Link} from "react-router-dom";
-import HomeComponent from "./HomeComponent";
+import {Provider} from "react-redux";
+import {createStore} from "redux"
+import rootReducer from "./reducer/rootReducer";
+import {composeWithDevTools} from "redux-devtools-extension";
+import FormComponentContainer from "./FormComponentContainer";
+import ContactListContainer from "./ContactListContainer";
+import {BrowserRouter as Router, Link, Route} from "react-router-dom";
+import AppHeader from "./AppHeader";
 import ContactDetails from "./ContactDetails";
+import HomeComponent from "./HomeComponent";
+
+const store = createStore(rootReducer, composeWithDevTools())
 
 class App extends Component {
 
@@ -20,21 +26,6 @@ class App extends Component {
         let resp = await fetch("/data.json");
         let contacts = await resp.json();
         this.setState({contacts: contacts.contacts})
-    }
-
-    addContact = (contact) => {
-        let {contacts} = this.state
-        contacts.unshift(contact)
-        this.setState({contacts})
-    }
-
-    deleteContact = (contactId) => {
-        let {contacts} = this.state
-        let index = contacts.findIndex(c => (c.id === contactId))
-        if (index !== -1) {
-            contacts.splice(index, 1)
-        }
-        this.setState({contacts})
     }
 
     getByID = (id) => {
@@ -52,8 +43,8 @@ class App extends Component {
         }
 
         return <div className="app">
+            <AppHeader title="React Application" subtitle="Learning Props"/>
             <Router>
-                <AppHeader title="React Application" subtitle="Learning Props"/>
                 <div className="row ">
                     <div className={"col-md-3"}>
                         <ul className={"list-group"}>
@@ -68,12 +59,11 @@ class App extends Component {
                             </li>
                         </ul>
                     </div>
+
                     <div className={"col-md-9"}>
                         <Route exact={true} path={"/"} component={HomeComponent}/>
-                        <Route path={"/add-new-contact"}
-                               component={() => <FormComponent addContact={this.addContact}/>}/>
-                        <Route path={"/all-contacts"} component={() => <ContactList contacts={this.state.contacts}
-                                                                                    deleteContact={this.deleteContact}/>}/>
+                        <Route path={"/add-new-contact"} component={() => <FormComponentContainer/>}/>
+                        <Route path={"/all-contacts"} component={() => <ContactListContainer/>}/>
                         <Route path={`/contact-details/:id`} exact={true}
                                component={(props) => <ContactDetails {...props} getByID={this.getByID}/>}/>
                     </div>
@@ -84,4 +74,8 @@ class App extends Component {
     }
 }
 
-ReactDOM.render(<App/>, document.getElementById('root'))
+ReactDOM.render(
+    <Provider store={store}>
+        <App/>
+    </Provider>,
+    document.getElementById('root'))
